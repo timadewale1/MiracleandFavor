@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Favor & Miracle - A Divine Union</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Tenor+Sans&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- GRAIN OVERLAY -->
+  <div class="grain-overlay" aria-hidden="true"></div>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
+
+  <!-- ══════════════════════════════
+       PRELOADER
+  ══════════════════════════════ -->
+  <div id="preloader">
+    <div class="pre-ring"></div>
+    <div class="pre-content">
+      <p class="pre-eyebrow">A Divine Union</p>
+      <h1 class="pre-names">F <span>&amp;</span> M</h1>
+      <div class="pre-bar"><div class="pre-bar-fill" id="preBarFill"></div></div>
+      <p class="pre-percent" id="prePercent">0%</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       NAVIGATION
+  ══════════════════════════════ -->
+  <nav id="navbar">
+    <div class="nav-logo">F <span>&amp;</span> M</div>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="#gifting">Gifts</a></li>
+      <li><a href="#story">Story</a></li>
+      <li><a href="#journey">Journey</a></li>
+      <li><a href="#proposal">Proposal</a></li>
+      <li><a href="#introduction">Introduction</a></li>
+      <li><a href="#prewedding">Pre-Wedding</a></li>
+      <li><a href="#event">Event</a></li>
+      <li><a href="#rsvp">RSVP</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ══════════════════════════════
+       HERO
+  ══════════════════════════════ -->
+  <section id="hero">
+    <div class="hero-texture"></div>
+    <div class="hero-vignette"></div>
+
+    <!-- Floating ornaments -->
+    <div class="orb orb--1"></div>
+    <div class="orb orb--2"></div>
+    <div class="orb orb--3"></div>
+
+    <div class="hero-inner">
+      <div class="hero-left">
+        <p class="hero-tag reveal-fade">- 25 · April · 2026 -</p>
+        <h1 class="hero-title">
+          <span class="ht-line reveal-up" style="--d:0ms">Favor</span>
+          <span class="ht-amp reveal-up" style="--d:200ms">&amp;</span>
+          <span class="ht-line reveal-up" style="--d:400ms">Miracle</span>
+        </h1>
+        <p class="hero-sub reveal-fade" style="--d:600ms">Jonah · Chukwudebe</p>
+        <div class="hero-rule reveal-fade" style="--d:800ms"></div>
+        <p class="hero-verse reveal-fade" style="--d:1000ms">"He who finds a wife finds a good thing<br/>and obtains favour from the Lord." - Prov. 18:22</p>
+        <a href="#event" class="hero-btn reveal-fade" style="--d:1200ms">
+          <span>View Event Details</span>
+          <svg viewBox="0 0 24 24" width="16"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+      <div class="hero-right reveal-scale" style="--d:300ms">
+        <div class="hero-photo-frame">
+          <div class="hero-photo-inner" id="heroPhotoInner">
+            <!-- filled by JS with first proposal/prewedding image -->
+            <div class="hero-photo-placeholder">F &amp; M</div>
+          </div>
+          <div class="frame-corner fc--tl"></div>
+          <div class="frame-corner fc--tr"></div>
+          <div class="frame-corner fc--bl"></div>
+          <div class="frame-corner fc--br"></div>
+          <div class="frame-badge">April 2026</div>
+        </div>
+      </div>
+    </div>
+
+    <a href="#story" class="hero-scroll" aria-label="Scroll down">
+      <span>Scroll</span>
+      <div class="scroll-track"><div class="scroll-thumb"></div></div>
+    </a>
+  </section>
+
+  <!-- ══════════════════════════════
+       FAMILIES
+  ══════════════════════════════ -->
+  <section id="families">
+    <div class="families-inner">
+      <div class="families-block reveal-up" data-delay="0">
+        <p class="families-role">The Groom's Family</p>
+        <h3 class="families-name">Deacon Chukwuemeka Jonah</h3>
+        <p class="families-and">&amp;</p>
+        <h3 class="families-name">Mrs. Amaoge Jonah</h3>
+      </div>
+      <div class="families-divider reveal-scale" data-delay="200">
+        <svg viewBox="0 0 60 120" width="40">
+          <path d="M30 0 Q40 30 30 60 Q20 90 30 120" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <circle cx="30" cy="60" r="5" fill="var(--gold)" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="families-block reveal-up" data-delay="400">
+        <p class="families-role">The Bride's Family</p>
+        <h3 class="families-name">Pst. Sabastine Chukwudebe</h3>
+        <p class="families-and">&amp;</p>
+        <h3 class="families-name">Pst. Mrs. Chiazor Chukwudebe</h3>
+      </div>
+    </div>
+    <p class="families-invite reveal-fade" data-delay="500">
+      Cordially invite you to the wedding celebration of their beloved children
+    </p>
+  </section>
+
+  <!-- ══════════════════════════════
+       GIFTING
+  ══════════════════════════════ -->
+  <section id="gifting">
+    <div class="section-label reveal-fade">Blessings & Tokens</div>
+    <h2 class="section-title reveal-up">Honour Them With Gifts</h2>
+
+    <div class="gifting-content">
+      <p class="gifting-note reveal-fade" data-delay="100">
+        <span class="gifting-bold">All gifts should be monetized.</span> Your monetary support is warmly appreciated as we embark on this beautiful journey together.
+      </p>
+
+      <div class="gifting-accounts">
+        <div class="account-card reveal-left" data-delay="150">
+          <div class="ac-icon">₦</div>
+          <div class="ac-label">Nigerian Naira</div>
+          <div class="ac-number">0140125877</div>
+          <p class="ac-name">Favour Chukwuemeka-Jonah</p>
+        </div>
+
+        <div class="account-card reveal-up" data-delay="200">
+          <div class="ac-icon">£</div>
+          <div class="ac-label">British Pounds</div>
+          <div class="ac-number">0742640048</div>
+          <p class="ac-name">Favour Chukwuemeka-Jonah</p>
+        </div>
+
+        <div class="account-card reveal-right" data-delay="250">
+          <div class="ac-icon">$</div>
+          <div class="ac-label">US Dollars</div>
+          <div class="ac-number">0688477276</div>
+          <p class="ac-name">Favour Chukwuemeka-Jonah</p>
+        </div>
+      </div>
+
+      <p class="gifting-footer reveal-fade" data-delay="300">
+        We are eternally grateful for your love, prayers, and generous support.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       STORY
+  ══════════════════════════════ -->
+  <section id="story">
+    <div class="section-label reveal-fade">Chapter One</div>
+    <h2 class="section-title reveal-up">Their Love Story</h2>
+
+    <div class="story-timeline">
+      <div class="timeline-line"></div>
+
+      <div class="story-item si--left reveal-left" data-delay="0">
+        <div class="si-card">
+          <span class="si-year">2020</span>
+          <h3>First Encounter</h3>
+          <p>Six years ago, two paths crossed in a moment ordained by heaven. A glance, a word, a connection that neither could explain nor ignore.</p>
+        </div>
+        <div class="si-dot"><div></div></div>
+      </div>
+
+      <div class="story-item si--right reveal-right" data-delay="150">
+        <div class="si-dot"><div></div></div>
+        <div class="si-card">
+          <span class="si-year">21 Aug · 2025</span>
+          <h3>He Asked</h3>
+          <p>On a day drenched in golden light, Favor knelt with a ring and a promise. Miracle's tearful "yes" sealed a covenant between two hearts.</p>
+        </div>
+      </div>
+
+      <div class="story-item si--left reveal-left" data-delay="300">
+        <div class="si-card">
+          <span class="si-year">10 Jan · 2026</span>
+          <h3>The Introduction</h3>
+          <p>Families united in celebration. When two families became one, joy filled every corner as they formally welcomed their daughter and son.</p>
+        </div>
+        <div class="si-dot"><div></div></div>
+      </div>
+
+      <div class="story-item si--right reveal-right" data-delay="450">
+        <div class="si-dot"><div></div></div>
+        <div class="si-card">
+          <span class="si-year">1 Feb · 2026</span>
+          <h3>Pre-Wedding Shoot</h3>
+          <p>Captured in love, framed in gold. Beautiful moments frozen in time, a prelude to the grandest celebration of their lives.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       JOURNEY
+  ══════════════════════════════ -->
+  <section id="journey" class="gallery-section dark-section">
+    <div class="section-label reveal-fade" style="color:var(--gold-light)">The Journey</div>
+    <h2 class="section-title reveal-up" style="color:var(--cream)">Our Journey Together</h2>
+    <p class="section-sub reveal-fade" style="color:var(--latte)">Every memory, a stepping stone to forever</p>
+
+    <!-- Journey Video -->
+    <div class="video-feature reveal-scale" data-delay="100" id="journeyVideoWrap">
+      <div class="video-loading">Loading journey film…</div>
+    </div>
+
+    <div class="gallery-bento" id="journeyGrid">
+      <!-- JS fills -->
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       PROPOSAL
+  ══════════════════════════════ -->
+  <section id="proposal" class="gallery-section dark-section">
+    <div class="section-label reveal-fade" style="color:var(--gold-light)">The Moment</div>
+    <h2 class="section-title reveal-up" style="color:var(--cream)">He Asked…</h2>
+    <p class="section-sub reveal-fade" style="color:var(--latte)">The proposal that started forever</p>
+
+    <!-- Proposal Video -->
+    <div class="video-feature reveal-scale" data-delay="100" id="proposalVideoWrap">
+      <!-- JS fills this -->
+      <div class="video-loading">Loading proposal film…</div>
+    </div>
+
+    <div class="gallery-grid" id="proposalGrid">
+      <!-- JS fills -->
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       INTRODUCTION
+  ══════════════════════════════ -->
+  <section id="introduction" class="gallery-section">
+    <div class="section-label reveal-fade">Families United</div>
+    <h2 class="section-title reveal-up">The Introduction</h2>
+    <p class="section-sub reveal-fade">When two families became one</p>
+
+    <div class="gallery-mosaic" id="introGrid">
+      <!-- JS fills -->
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       PRE-WEDDING
+  ══════════════════════════════ -->
+  <section id="prewedding" class="gallery-section">
+    <div class="section-label reveal-fade">Before the Day</div>
+    <h2 class="section-title reveal-up">Pre-Wedding Shoot</h2>
+    <p class="section-sub reveal-fade">Captured in love, framed in gold</p>
+
+    <div class="gallery-horizontal-scroll" id="preweddingTrack">
+      <!-- JS fills -->
+    </div>
+    <div class="scroll-hint-h">← Scroll to explore →</div>
+  </section>
+
+  <!-- ══════════════════════════════
+       QUOTE
+  ══════════════════════════════ -->
+  <section id="quote-section">
+    <div class="qs-bg"></div>
+    <div class="qs-content reveal-up">
+      <div class="qs-ornament">❧</div>
+      <blockquote>
+        "Two are better than one, for they have a good reward for their labour. For if they fall, one will lift up the other."
+        <cite>- Ecclesiastes 4:9-10</cite>
+      </blockquote>
+      <div class="qs-ornament">❧</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       EVENT DETAILS
+  ══════════════════════════════ -->
+  <section id="event">
+    <div class="section-label reveal-fade">Mark Your Calendar</div>
+    <h2 class="section-title reveal-up">The Celebration</h2>
+
+    <!-- Date Banner -->
+    <div class="date-banner reveal-scale">
+      <div class="db-part">
+        <span class="db-num">Saturday</span>
+        <span class="db-label">Day</span>
+      </div>
+      <div class="db-sep">·</div>
+      <div class="db-part">
+        <span class="db-num">25</span>
+        <span class="db-label">April</span>
+      </div>
+      <div class="db-sep">·</div>
+      <div class="db-part">
+        <span class="db-num">2026</span>
+        <span class="db-label">Year</span>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown-wrap reveal-fade">
+      <div class="cd-unit"><span id="cdD">00</span><label>Days</label></div>
+      <div class="cd-colon">:</div>
+      <div class="cd-unit"><span id="cdH">00</span><label>Hours</label></div>
+      <div class="cd-colon">:</div>
+      <div class="cd-unit"><span id="cdM">00</span><label>Mins</label></div>
+      <div class="cd-colon">:</div>
+      <div class="cd-unit"><span id="cdS">00</span><label>Secs</label></div>
+    </div>
+
+    <!-- Venues -->
+    <div class="venues-grid">
+      <div class="venue-card reveal-left" data-delay="0">
+        <div class="vc-icon">
+          <svg viewBox="0 0 48 48" fill="none"><path d="M24 4L4 18v26h40V18L24 4z" stroke="var(--gold)" stroke-width="1.5" fill="rgba(200,160,60,0.08)"/><rect x="18" y="28" width="12" height="16" rx="1" stroke="var(--gold)" stroke-width="1.2"/><path d="M24 4v6" stroke="var(--gold)" stroke-width="1.5"/></svg>
+        </div>
+        <span class="vc-type">Church Service</span>
+        <h3>RCCG Jesus Chapel</h3>
+        <p>John Cardinal Onaiyekan Street<br/>Kubwa, Abuja</p>
+        <div class="vc-time">12:00 PM</div>
+        <a href="https://maps.google.com/?q=RCCG+Jesus+Chapel+Kubwa+Abuja" target="_blank" class="vc-map">Get Directions →</a>
+      </div>
+
+      <div class="venue-middle reveal-up" data-delay="200">
+        <div class="vm-monogram">F<span>&amp;</span>M</div>
+        <p class="vm-date">25 · 04 · 2026</p>
+        <div class="vm-swatches">
+          <span class="vms vms--burgundy" title="Burgundy"></span>
+          <span class="vms vms--coffee" title="Coffee"></span>
+          <span class="vms vms--gold" title="Gold"></span>
+        </div>
+        <p class="vm-dress">Dress Code</p>
+        <p class="vm-colors">Burgundy · Coffee · Gold Brown</p>
+      </div>
+
+      <div class="venue-card reveal-right" data-delay="400">
+        <div class="vc-icon">
+          <svg viewBox="0 0 48 48" fill="none"><rect x="4" y="14" width="40" height="28" rx="2" stroke="var(--gold)" stroke-width="1.5" fill="rgba(200,160,60,0.08)"/><path d="M4 22h40M16 14V10a8 8 0 0116 0v4" stroke="var(--gold)" stroke-width="1.5"/><circle cx="24" cy="30" r="3" fill="var(--gold)" opacity="0.7"/></svg>
+        </div>
+        <span class="vc-type">Reception</span>
+        <h3>Sublime Royal Suites &amp; Hotels</h3>
+        <p>Follow immediately after<br/>Church Service</p>
+        <div class="vc-time">2:00 PM</div>
+        <a href="https://maps.google.com/?q=Sublime+Royal+Suites+Hotels+Kubwa+Abuja" target="_blank" class="vc-map">Get Directions →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       RSVP
+  ══════════════════════════════ -->
+  <section id="rsvp" class="dark-section">
+    <div class="rsvp-bg-pattern"></div>
+    <div class="section-label reveal-fade" style="color:var(--gold-light)">You're Invited</div>
+    <h2 class="section-title reveal-up" style="color:var(--cream)">Kindly RSVP</h2>
+    <p class="section-sub reveal-fade" style="color:var(--latte)">Please respond by 15th April 2026</p>
+
+    <div class="rsvp-wrap reveal-up">
+      <div class="rsvp-deco">
+        <span>F</span><div class="rsvp-deco-line"></div><span>M</span>
+      </div>
+      <div id="rsvpForm" class="rsvp-form">
+        <div class="rf-row">
+          <div class="rf-group">
+            <label>Full Name</label>
+            <input type="text" id="rfName" placeholder="Your full name"/>
+          </div>
+          <div class="rf-group">
+            <label>Phone Number</label>
+            <input type="tel" id="rfPhone" placeholder="+234 000 000 0000"/>
+          </div>
+        </div>
+        <div class="rf-row">
+          <div class="rf-group">
+            <label>Email Address</label>
+            <input type="email" id="rfEmail" placeholder="your@email.com"/>
+          </div>
+          <div class="rf-group">
+            <label>Attending?</label>
+            <select id="rfAttend">
+              <option value="">Select…</option>
+              <option value="yes-both">Yes - Church &amp; Reception</option>
+              <option value="yes-reception">Yes - Reception Only</option>
+              <option value="no">Regretfully Declining</option>
+            </select>
+          </div>
+        </div>
+        <div class="rf-row">
+          <div class="rf-group">
+            <label>Number of Guests</label>
+            <input type="number" id="rfGuests" min="1" max="6" placeholder="1"/>
+          </div>
+          <div class="rf-group">
+            <label>Dietary Needs</label>
+            <input type="text" id="rfDiet" placeholder="Any dietary requirements?"/>
+          </div>
+        </div>
+        <div class="rf-group rf-full">
+          <label>A Message for the Couple</label>
+          <textarea id="rfMsg" rows="4" placeholder="Share your blessings and well-wishes…"></textarea>
+        </div>
+        <button class="rsvp-btn" id="rsvpBtn">
+          <span id="rsvpBtnText">Send RSVP</span>
+          <svg viewBox="0 0 24 24" width="18"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div id="rsvpSuccess" class="rsvp-success hidden">
+        <div class="rs-icon">
+          <svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="38" stroke="var(--gold)" stroke-width="1.5"/><path d="M24 40l10 10 22-22" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Wonderful!</h3>
+        <p>Your RSVP has been received. Favor &amp; Miracle are so excited to celebrate with you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       FOOTER
+  ══════════════════════════════ -->
+  <footer id="footer">
+    <div class="footer-inner">
+      <div class="footer-monogram">F <span>&amp;</span> M</div>
+      <p class="footer-names">Favor Jonah &amp; Miracle Chukwudebe</p>
+      <p class="footer-date">Saturday, 25th April · 2026 · Abuja, Nigeria</p>
+      <div class="footer-sep">
+        <span></span>
+        <svg viewBox="0 0 24 24" width="18"><path d="M12 2C6 2 2 6 2 12s4 10 10 10 10-4 10-10S18 2 12 2zm0 6l1.5 3 3.5.5-2.5 2.5.5 3.5L12 16l-3 1.5.5-3.5L7 11.5l3.5-.5L12 8z" fill="var(--gold)" opacity="0.5"/></svg>
+        <span></span>
+      </div>
+      <p class="footer-verse">"This is the day the LORD has made; we will rejoice and be glad in it." - Psalm 118:24</p>
+      <p class="footer-credit">Crafted with love ✦ 2026</p>
+    </div>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox">
+    <button class="lb-close" id="lbClose">&times;</button>
+    <button class="lb-nav lb-prev" id="lbPrev">&#8592;</button>
+    <div class="lb-stage">
+      <img id="lbImg" src="" alt=""/>
+    </div>
+    <button class="lb-nav lb-next" id="lbNext">&#8594;</button>
+    <div class="lb-info">
+      <span id="lbCounter"></span>
+      <span id="lbCaption"></span>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
