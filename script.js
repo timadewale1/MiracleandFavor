@@ -42,7 +42,7 @@ const CONFIG = {
 
   // Video folders → wrap element IDs
   videoGroups: [
-    { folder: 'proposal-video',  wrapId: 'proposalVideoWrap',  label: 'Proposal Film' },
+    { folder: 'proposal-video',  containerId: 'proposalVideosWrap',  label: 'Proposal Film', multiple: true },
     { folder: 'journey-video',   wrapId: 'journeyVideoWrap',   label: 'Journey Film'  },
   ],
 
@@ -390,6 +390,7 @@ lightbox.addEventListener('touchend',   e => {
 const navbar    = document.getElementById('navbar');
 const navToggle = document.getElementById('navToggle');
 const navMenu   = document.getElementById('navMenu');
+const navClose  = document.getElementById('navClose');
 
 window.addEventListener('scroll', () => {
   navbar.classList.toggle('scrolled', window.scrollY > 60);
@@ -399,6 +400,12 @@ navToggle.addEventListener('click', () => {
   navToggle.classList.toggle('open');
   navMenu.classList.toggle('open');
 });
+
+navClose.addEventListener('click', () => {
+  navToggle.classList.remove('open');
+  navMenu.classList.remove('open');
+});
+
 navMenu.querySelectorAll('a').forEach(a => {
   a.addEventListener('click', () => {
     navToggle.classList.remove('open');
@@ -593,18 +600,43 @@ async function init() {
 
   // Load videos
   for (const vg of CONFIG.videoGroups) {
-    const wrapEl = document.getElementById(vg.wrapId);
-    if (!wrapEl) { progress += stepSize; setProgress(progress + 20); continue; }
-
-    // Try to find video file
-    const videoUrl = await discoverVideo(vg.folder);
     progress += stepSize;
     setProgress(progress + 20);
 
-    if (videoUrl) {
-      buildVideoPlayer(wrapEl, videoUrl, vg.label);
+    if (vg.multiple) {
+      // Handle multiple videos
+      const container = document.getElementById(vg.containerId);
+      if (!container) continue;
+
+      const videoUrls = await discoverAllVideos(vg.folder);
+      
+      if (videoUrls.length > 0) {
+        container.innerHTML = '';
+        videoUrls.forEach((url, idx) => {
+          const wrap = document.createElement('div');
+          wrap.className = 'video-feature reveal-scale';
+          wrap.style.setProperty('--d', (100 + idx * 50) + 'ms');
+          wrap.setAttribute('data-delay', 100 + idx * 50);
+          buildVideoPlayer(wrap, url, `${vg.label} ${idx + 1}`);
+          container.appendChild(wrap);
+        });
+        // Re-observe new elements
+        container.querySelectorAll('.reveal-scale').forEach(el => revealObserver && revealObserver.observe(el));
+      } else {
+        container.innerHTML = `<p style="color:var(--latte);text-align:center;padding:2rem;font-style:italic;opacity:0.6">No videos found in /${vg.folder}</p>`;
+      }
     } else {
-      wrapEl.innerHTML = `<p style="color:var(--latte);text-align:center;padding:2rem;font-style:italic;opacity:0.6">No video found in /${vg.folder}</p>`;
+      // Handle single video
+      const wrapEl = document.getElementById(vg.wrapId);
+      if (!wrapEl) continue;
+
+      const videoUrl = await discoverVideo(vg.folder);
+
+      if (videoUrl) {
+        buildVideoPlayer(wrapEl, videoUrl, vg.label);
+      } else {
+        wrapEl.innerHTML = `<p style="color:var(--latte);text-align:center;padding:2rem;font-style:italic;opacity:0.6">No video found in /${vg.folder}</p>`;
+      }
     }
   }
 
@@ -634,6 +666,34 @@ async function discoverVideo(folder) {
     }
   }
   return null;
+}
+
+/**
+ * Discover all video files in a folder.
+ * Returns array of video URLs.
+ */
+async function discoverAllVideos(folder) {
+  const videoExts = ['mp4','webm','mov','MP4','WEBM','MOV'];
+  const found = [];
+  
+  // Try numbered stems: 1.mp4, 2.mp4, etc up to 10
+  for (let i = 1; i <= 10; i++) {
+    for (const ext of videoExts) {
+      const url = `${folder}/${i}.${ext}`;
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 2000);
+        const r = await fetch(url, { method: 'HEAD', signal: controller.signal });
+        clearTimeout(timeout);
+        if (r.ok) {
+          found.push(url);
+          break; // Found this number, move to next
+        }
+      } catch { }
+    }
+  }
+  
+  return found;
 }
 
 // Kick off
