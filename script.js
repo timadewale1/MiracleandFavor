@@ -108,6 +108,17 @@ function finishPreloader() {
     document.body.style.overflow = '';
     initRevealObserver();
     triggerHeroReveal();
+    
+    // Play background music softly
+    const bgMusic = document.getElementById('bgMusic');
+    if (bgMusic) {
+      bgMusic.volume = 0.2; // 30% volume
+      bgMusic.loop = true;
+      bgMusic.play().catch(err => {
+        // Silently handle autoplay restrictions
+        console.debug('Background music autoplay not allowed:', err);
+      });
+    }
   }, 600);
 }
 
@@ -644,27 +655,46 @@ async function init() {
 }
 
 /**
- * Discover a video file in a folder.
+ * Discover a video file in a folder with smart probing.
  * Returns the first found URL or null.
  */
 async function discoverVideo(folder) {
-  const stems = ['video1','video','1','film','intro','proposal','journey','clip'];
-  for (let i = 1; i <= 5; i++) stems.push(String(i));
-
-  const videoExts = ['mp4','webm','mov','MP4','WEBM','MOV'];
+  const videoExts = ['mp4', 'webm', 'mov', 'MP4', 'WEBM', 'MOV'];
+  
+  // Extract folder name to use as priority stem
+  const folderName = folder.split('/').pop().replace('-video', '');
+  
+  // Build prioritized stems: try folder-specific name first, then numbered
+  const stems = [folderName]; // e.g., 'journey' for journey-video
+  stems.push('video', '1'); // Common names
+  
+  let consecutiveMisses = 0;
+  const maxMisses = 1; // Stop after 1 stem with no matches
   
   for (const stem of stems) {
-    for (const ext of videoExts) {
+    let foundInThisStem = false;
+    
+    // Only try first 3 extensions per stem to reduce HEAD requests
+    for (let i = 0; i < Math.min(3, videoExts.length); i++) {
+      const ext = videoExts[i];
       const url = `${folder}/${stem}.${ext}`;
       try {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 2000);
+        const timeout = setTimeout(() => controller.abort(), 1000);
         const r = await fetch(url, { method: 'HEAD', signal: controller.signal });
         clearTimeout(timeout);
-        if (r.ok) return url;
+        if (r.ok) {
+          return url;
+        }
       } catch { }
     }
+    
+    if (!foundInThisStem) {
+      consecutiveMisses++;
+      if (consecutiveMisses >= maxMisses) break; // Stop probing
+    }
   }
+  
   return null;
 }
 
@@ -672,24 +702,38 @@ async function discoverVideo(folder) {
  * Discover all video files in a folder.
  * Returns array of video URLs.
  */
+/**
+ * Discover all video files in a folder.
+ * Returns array of video URLs (stops probing after consecutive misses).
+ */
 async function discoverAllVideos(folder) {
-  const videoExts = ['mp4','webm','mov','MP4','WEBM','MOV'];
+  const videoExts = ['mp4', 'webm', 'mov', 'MP4', 'WEBM', 'MOV'];
   const found = [];
+  let consecutiveMisses = 0;
+  const maxMisses = 2; // Stop probing after 2 consecutive numbers with no videos
   
-  // Try numbered stems: 1.mp4, 2.mp4, etc up to 10
-  for (let i = 1; i <= 10; i++) {
+  // Try numbered stems: 1.mp4, 2.mp4, etc
+  for (let i = 1; i <= 5 && consecutiveMisses < maxMisses; i++) {
+    let foundInThisNumber = false;
+    
     for (const ext of videoExts) {
       const url = `${folder}/${i}.${ext}`;
       try {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 2000);
+        const timeout = setTimeout(() => controller.abort(), 1500);
         const r = await fetch(url, { method: 'HEAD', signal: controller.signal });
         clearTimeout(timeout);
         if (r.ok) {
           found.push(url);
+          foundInThisNumber = true;
+          consecutiveMisses = 0; // Reset counter
           break; // Found this number, move to next
         }
       } catch { }
+    }
+    
+    if (!foundInThisNumber) {
+      consecutiveMisses++;
     }
   }
   
