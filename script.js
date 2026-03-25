@@ -42,8 +42,8 @@ const CONFIG = {
 
   // Video folders → wrap element IDs
   videoGroups: [
-    { folder: 'proposal-video',  containerId: 'proposalVideosWrap',  label: 'Proposal Film', multiple: true },
-    { folder: 'journey-video',   wrapId: 'journeyVideoWrap',   label: 'Journey Film'  },
+    { folder: 'proposal-video', containerId: 'proposalVideosWrap', label: 'Proposal Film', files: ['1.mp4', '2.mp4', '3.mp4'], multiple: true },
+    { folder: 'journey-video', wrapId: 'journeyVideoWrap', label: 'Journey Film', files: ['journey.mp4'] },
   ],
 
   // Common image & video extensions to probe
@@ -84,6 +84,23 @@ async function loadImagesFromManifest() {
 function getRandomImages(folderImages, maxCount = 15) {
   const shuffled = shuffleArray(folderImages || []);
   return shuffled.slice(0, Math.min(maxCount, shuffled.length));
+}
+
+function buildImageTag(src, alt, priority = 'low') {
+  return `<img src="${src}" alt="${alt}" loading="lazy" decoding="async" fetchpriority="${priority}"/>`;
+}
+
+function getVideoUrls(group) {
+  return (group.files || []).map(file => `${group.folder}/${file}`);
+}
+
+function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => {
+      console.debug('Service worker registration failed:', err);
+    });
+  });
 }
 
 /* ──────────────────────────────────────────────────────────
@@ -147,10 +164,10 @@ async function loadHeroPhoto(imagesData) {
   
   wrap.innerHTML = `
     <div class="hero-photo-grid">
-      ${proposal[0] ? `<div class="hpg-item"><img src="proposal/${proposal[0]}" alt="Proposal" loading="lazy"/></div>` : ''}
-      ${preWedding[0] ? `<div class="hpg-item"><img src="pre-wedding/${preWedding[0]}" alt="Pre-Wedding" loading="lazy"/></div>` : ''}
-      ${journey[0] ? `<div class="hpg-item"><img src="journey/${journey[0]}" alt="Journey" loading="lazy"/></div>` : ''}
-      ${introduction[0] ? `<div class="hpg-item"><img src="introduction/${introduction[0]}" alt="Introduction" loading="lazy"/></div>` : ''}
+      ${proposal[0] ? `<div class="hpg-item">${buildImageTag(`proposal/${proposal[0]}`, 'Proposal', 'high')}</div>` : ''}
+      ${preWedding[0] ? `<div class="hpg-item">${buildImageTag(`pre-wedding/${preWedding[0]}`, 'Pre-Wedding')}</div>` : ''}
+      ${journey[0] ? `<div class="hpg-item">${buildImageTag(`journey/${journey[0]}`, 'Journey')}</div>` : ''}
+      ${introduction[0] ? `<div class="hpg-item">${buildImageTag(`introduction/${introduction[0]}`, 'Introduction')}</div>` : ''}
     </div>
   `;
 }
@@ -188,7 +205,7 @@ function buildGridGallery(container, urls, groupId) {
     
     item.innerHTML = `
       <div class="g-polaroid">
-        <img src="${url}" alt="Photo ${idx+1}" loading="lazy"/>
+        ${buildImageTag(url, `Photo ${idx+1}`)}
         <div class="g-overlay"><span>✦</span></div>
       </div>
     `;
@@ -216,7 +233,7 @@ function buildHorizontalGallery(container, urls, groupId) {
     
     item.innerHTML = `
       <div class="gh-polaroid">
-        <img src="${url}" alt="Pre-Wedding ${idx+1}" loading="lazy"/>
+        ${buildImageTag(url, `Pre-Wedding ${idx+1}`)}
         <div class="gh-overlay"><span>✦</span></div>
       </div>
     `;
@@ -246,7 +263,7 @@ function buildBentoGallery(container, urls, groupId) {
     
     item.innerHTML = `
       <div class="gb-polaroid">
-        <img src="${url}" alt="Journey ${idx+1}" loading="lazy"/>
+        ${buildImageTag(url, `Journey ${idx+1}`)}
         <div class="gb-overlay"><span>✦</span></div>
       </div>
     `;
@@ -276,7 +293,7 @@ function buildMosaicGallery(container, urls, groupId) {
     
     item.innerHTML = `
       <div class="gm-polaroid">
-        <img src="${url}" alt="Introduction ${idx+1}" loading="lazy"/>
+        ${buildImageTag(url, `Introduction ${idx+1}`)}
         <div class="gm-overlay"><span>✦</span></div>
       </div>
     `;
@@ -290,6 +307,10 @@ function buildMosaicGallery(container, urls, groupId) {
 ────────────────────────────────────────────────────────── */
 function buildVideoPlayer(wrapEl, videoUrl, label) {
   wrapEl.innerHTML = `
+    <div class="video-loading-state is-active">
+      <div class="video-spinner" aria-hidden="true"></div>
+      <p>Loading ${label.toLowerCase()}...</p>
+    </div>
     <video id="vid-${wrapEl.id}" preload="metadata" playsinline>
       <source src="${videoUrl}" type="video/mp4"/>
     </video>
@@ -301,6 +322,8 @@ function buildVideoPlayer(wrapEl, videoUrl, label) {
   `;
   const video   = wrapEl.querySelector('video');
   const overlay = wrapEl.querySelector('.video-overlay');
+  const loading = wrapEl.querySelector('.video-loading-state');
+  const setReady = () => loading && loading.classList.remove('is-active');
 
   function togglePlay() {
     if (video.paused) {
@@ -324,6 +347,14 @@ function buildVideoPlayer(wrapEl, videoUrl, label) {
   video.addEventListener('pause', () => {
     overlay.style.opacity = '1';
     overlay.style.pointerEvents = '';
+  });
+  video.addEventListener('loadeddata', setReady, { once: true });
+  video.addEventListener('canplay', setReady, { once: true });
+  video.addEventListener('error', () => {
+    if (!loading) return;
+    loading.classList.add('is-active');
+    const message = loading.querySelector('p');
+    if (message) message.textContent = `Loading ${label.toLowerCase()}...`;
   });
 }
 
@@ -539,7 +570,7 @@ const rsvpBtnText = document.getElementById('rsvpBtnText');
 const rsvpFormEl  = document.getElementById('rsvpForm');
 const rsvpSuccess = document.getElementById('rsvpSuccess');
 
-rsvpBtn.addEventListener('click', () => {
+if (rsvpBtn && rsvpBtnText && rsvpFormEl && rsvpSuccess) rsvpBtn.addEventListener('click', () => {
   const name   = document.getElementById('rfName').value.trim();
   const phone  = document.getElementById('rfPhone').value.trim();
   const email  = document.getElementById('rfEmail').value.trim();
@@ -619,7 +650,7 @@ async function init() {
       const container = document.getElementById(vg.containerId);
       if (!container) continue;
 
-      const videoUrls = await discoverAllVideos(vg.folder);
+      const videoUrls = getVideoUrls(vg);
       
       if (videoUrls.length > 0) {
         container.innerHTML = '';
@@ -634,19 +665,19 @@ async function init() {
         // Re-observe new elements
         container.querySelectorAll('.reveal-scale').forEach(el => revealObserver && revealObserver.observe(el));
       } else {
-        container.innerHTML = `<p style="color:var(--latte);text-align:center;padding:2rem;font-style:italic;opacity:0.6">No videos found in /${vg.folder}</p>`;
+        container.innerHTML = '';
       }
     } else {
       // Handle single video
       const wrapEl = document.getElementById(vg.wrapId);
       if (!wrapEl) continue;
 
-      const videoUrl = await discoverVideo(vg.folder);
+      const videoUrl = getVideoUrls(vg)[0];
 
       if (videoUrl) {
         buildVideoPlayer(wrapEl, videoUrl, vg.label);
       } else {
-        wrapEl.innerHTML = `<p style="color:var(--latte);text-align:center;padding:2rem;font-style:italic;opacity:0.6">No video found in /${vg.folder}</p>`;
+        wrapEl.innerHTML = `<div class="video-loading-state is-active"><div class="video-spinner" aria-hidden="true"></div><p>Loading ${vg.label.toLowerCase()}...</p></div>`;
       }
     }
   }
@@ -654,94 +685,9 @@ async function init() {
   finishPreloader();
 }
 
-/**
- * Discover a video file in a folder with smart probing.
- * Returns the first found URL or null.
- */
-async function discoverVideo(folder) {
-  const videoExts = ['mp4', 'webm', 'mov', 'MP4', 'WEBM', 'MOV'];
-  
-  // Extract folder name to use as priority stem
-  const folderName = folder.split('/').pop().replace('-video', '');
-  
-  // Build prioritized stems: try folder-specific name first, then numbered
-  const stems = [folderName]; // e.g., 'journey' for journey-video
-  stems.push('video', '1'); // Common names
-  
-  let consecutiveMisses = 0;
-  const maxMisses = 1; // Stop after 1 stem with no matches
-  
-  for (const stem of stems) {
-    let foundInThisStem = false;
-    
-    // Only try first 3 extensions per stem to reduce HEAD requests
-    for (let i = 0; i < Math.min(3, videoExts.length); i++) {
-      const ext = videoExts[i];
-      const url = `${folder}/${stem}.${ext}`;
-      try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 1000);
-        const r = await fetch(url, { method: 'HEAD', signal: controller.signal });
-        clearTimeout(timeout);
-        if (r.ok) {
-          return url;
-        }
-      } catch { }
-    }
-    
-    if (!foundInThisStem) {
-      consecutiveMisses++;
-      if (consecutiveMisses >= maxMisses) break; // Stop probing
-    }
-  }
-  
-  return null;
-}
-
-/**
- * Discover all video files in a folder.
- * Returns array of video URLs.
- */
-/**
- * Discover all video files in a folder.
- * Returns array of video URLs (stops probing after consecutive misses).
- */
-async function discoverAllVideos(folder) {
-  const videoExts = ['mp4', 'webm', 'mov', 'MP4', 'WEBM', 'MOV'];
-  const found = [];
-  let consecutiveMisses = 0;
-  const maxMisses = 2; // Stop probing after 2 consecutive numbers with no videos
-  
-  // Try numbered stems: 1.mp4, 2.mp4, etc
-  for (let i = 1; i <= 5 && consecutiveMisses < maxMisses; i++) {
-    let foundInThisNumber = false;
-    
-    for (const ext of videoExts) {
-      const url = `${folder}/${i}.${ext}`;
-      try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 1500);
-        const r = await fetch(url, { method: 'HEAD', signal: controller.signal });
-        clearTimeout(timeout);
-        if (r.ok) {
-          found.push(url);
-          foundInThisNumber = true;
-          consecutiveMisses = 0; // Reset counter
-          break; // Found this number, move to next
-        }
-      } catch { }
-    }
-    
-    if (!foundInThisNumber) {
-      consecutiveMisses++;
-    }
-  }
-  
-  return found;
-}
-
 // Kick off
 window.addEventListener('DOMContentLoaded', () => {
+  registerServiceWorker();
   init().catch(err => {
     console.warn('Media discovery error:', err);
     finishPreloader();

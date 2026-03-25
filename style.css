@@ -899,6 +899,45 @@ body:has(a:hover, button:hover) .cursor-follower {
   border: 1px dashed rgba(200,160,64,0.2);
 }
 
+.video-loading-state {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.9rem;
+  background: linear-gradient(180deg, rgba(26,15,8,0.45), rgba(26,15,8,0.28));
+  border: 1px solid rgba(200,160,64,0.18);
+  color: var(--cream);
+  z-index: 2;
+}
+
+.video-loading-state.is-active {
+  display: flex;
+}
+
+.video-loading-state p {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+
+.video-spinner {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid rgba(248,240,227,0.18);
+  border-top-color: var(--gold);
+  animation: videoSpin 0.85s linear infinite;
+}
+
+@keyframes videoSpin {
+  to { transform: rotate(360deg); }
+}
+
 /* ── HERO PHOTO GRID ── */
 .hero-photo-grid {
   display: grid;
