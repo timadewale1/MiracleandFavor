@@ -321,6 +321,15 @@ body:has(a:hover, button:hover) .cursor-follower {
 }
 @media (max-width: 900px) { .hero-verse { margin: 0 auto; } }
 
+.hero-hashtag {
+  margin-top: 1.25rem;
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+
 .hero-btn {
   display: inline-flex; align-items: center; gap: 10px;
   margin-top: 2.5rem;
@@ -465,6 +474,102 @@ body:has(a:hover, button:hover) .cursor-follower {
   margin: 0 auto;
 }
 
+/* ── PARTY ── */
+#party {
+  padding: var(--sp) 5vw;
+  background:
+    radial-gradient(circle at top left, rgba(200,160,64,0.08), transparent 28%),
+    linear-gradient(180deg, var(--cream-dark) 0%, var(--warm-white) 100%);
+  border-bottom: 1px solid rgba(200,160,64,0.28);
+}
+
+.party-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.5rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.party-column {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.party-heading {
+  text-align: center;
+  padding: 1.5rem 1.25rem 0;
+}
+
+.party-kicker,
+.perspective-kicker {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  margin-bottom: 0.75rem;
+}
+
+.party-heading h3,
+.perspective-top h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 400;
+  color: var(--coffee);
+}
+
+.party-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.party-card {
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(59,35,20,0.08);
+  box-shadow: 0 18px 40px rgba(59,35,20,0.08);
+  overflow: hidden;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+
+.party-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 50px rgba(59,35,20,0.14);
+}
+
+.party-card img {
+  aspect-ratio: 4 / 4.7;
+}
+
+.party-card--featured {
+  grid-column: 1 / -1;
+}
+
+.party-card-copy {
+  padding: 1.2rem 1.1rem 1.35rem;
+  text-align: center;
+}
+
+.party-role {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.party-card h4 {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 400;
+  color: var(--coffee);
+  line-height: 1.35;
+}
+
 /* ── GIFTING ── */
 #gifting {
   padding: 5rem 5vw;
@@ -531,6 +636,15 @@ body:has(a:hover, button:hover) .cursor-follower {
   margin-bottom: 0.75rem;
 }
 
+.ac-bank {
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.35rem;
+}
+
 .ac-number {
   font-family: 'Courier New', monospace;
   font-size: 1.25rem;
@@ -586,6 +700,46 @@ body:has(a:hover, button:hover) .cursor-follower {
   text-align: center;
   color: var(--coffee-light);
   margin-bottom: 3.5rem;
+}
+
+/* ── PERSPECTIVES ── */
+#perspectives {
+  padding: var(--sp) 5vw;
+  background:
+    radial-gradient(circle at top right, rgba(224,188,112,0.12), transparent 26%),
+    linear-gradient(135deg, rgba(107,26,43,0.08) 0%, rgba(59,35,20,0.03) 45%, rgba(200,160,64,0.12) 100%);
+}
+
+.perspectives-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.perspective-card {
+  background: #fff;
+  border: 1px solid var(--cream-dark);
+  box-shadow: 0 20px 50px rgba(59,35,20,0.08);
+  padding: 2.5rem;
+}
+
+.perspective-top {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(200,160,64,0.25);
+}
+
+.perspective-copy {
+  display: grid;
+  gap: 1rem;
+}
+
+.perspective-copy p {
+  color: var(--coffee-light);
+  font-size: 0.96rem;
+  line-height: 1.95;
 }
 
 /* ── STORY ── */
@@ -1415,6 +1569,15 @@ body:has(a:hover, button:hover) .cursor-follower {
   text-transform: uppercase;
   margin-bottom: 1.8rem;
 }
+
+.footer-hashtag {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(224,188,112,0.8);
+  margin-bottom: 1.4rem;
+}
 .footer-sep {
   display: flex; align-items: center; justify-content: center;
   gap: 1.5rem; margin-bottom: 1.8rem;
@@ -1516,6 +1679,10 @@ body:has(a:hover, button:hover) .cursor-follower {
   }
   .nav-menu.open .nav-close { display: block; }
   .nav-menu.open a { font-size: 1.1rem; color: var(--cream); }
+  .party-layout,
+  .party-grid,
+  .perspectives-grid { grid-template-columns: 1fr; }
+  .perspective-card { padding: 2rem 1.4rem; }
   .lb-prev { left: 8px; }
   .lb-next { right: 8px; }
   .rsvp-form { padding: 2rem 1.5rem; }
